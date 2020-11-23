@@ -1,5 +1,7 @@
 *.log
 *.ini
+*vault*
 /facts
-/group_vars/*/*
 /host_vars/*/*
+!/host_vars/examples/*
+/roles/geerlingguy*

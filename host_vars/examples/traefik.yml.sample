@@ -1,0 +1,9 @@
+# Traefik proxy
+traefik_letsencrypt_email: admin@example.com
+traefik_install_user: "{{ default_user }}"
+traefik_install_path: "{{ default_install_path }}"
+traefik_xpose_internally: True
+traefik_expose_externally: False
+traefik_enable_acme: True
+traefik_use_acme_staging: False
+traefik_dns_challenge_provider: False

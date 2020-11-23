@@ -1,0 +1,8 @@
+# Deployment users and paths
+default_user: '{{ ansible_user }}'
+default_install_path: "/home/{{ default_user }}"
+default_services_path: "{{ default_install_path }}/services"
+
+# Defaults for multitenant setups
+tenant_name: ''
+tenant_install_path: "{{ default_services_path }}{{ '/' + tenant_name if (tenant_name) else '' }}"

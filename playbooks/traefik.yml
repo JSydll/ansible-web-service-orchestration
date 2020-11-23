@@ -1,0 +1,7 @@
+---
+# Traefik reverse proxy
+
+- hosts: traefik
+  become: true
+  roles:
+    - jotbe.traefik-docker

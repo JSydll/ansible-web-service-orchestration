@@ -1,30 +1,33 @@
-# All hosts
-myServer ansible_user=devops ansible_host=127.0.0.1
+# Real hosts
+[srv01]
+# Main host
+srv01_host
+# Tenants
+srv01_tenant_a 
+srv01_tenant_b
 
-[common]
-myServer
+[srv01:vars]
+ansible_host=207.0.0.1 
+ansible_ssh_host=207.0.0.1 
 
-[tenant_a]
-myServer
+[docker]
+srv01_host
 
-[tenant_b]
-myServer
+[traefik]
+srv01_host
 
-[docker:children]
-common
+#[nextcloud]
+#srv01_tenant_a
 
-[nextcloud:children]
-tenant_a
+[jitsi_docker]
+srv01_tenant_a
+srv01_tenant_b
 
-[jitsi_docker:children]
-tenant_a
-tenant_b
+#[collabora]
+#srv01_tenant_a
 
-[collabora:children]
-tenant_a
+#[onlyoffice]
+#srv01_tenant_a
 
-[onlyoffice:children]
-tenant_a
-
-[cryptpad:children]
-tenant_a
+#[cryptpad]
+#srv01_tenant_a

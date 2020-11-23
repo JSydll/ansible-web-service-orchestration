@@ -6,4 +6,3 @@
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
-    - jotbe.traefik-docker

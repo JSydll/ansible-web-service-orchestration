@@ -1,0 +1,14 @@
+# Firewall
+firewall_disable_ufw: true
+firewall_flush_rules_and_chains: true
+firewall_additional_rules:
+  - "iptables --policy INPUT DENY"
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+  # Jitsi
+  - "4443"
+firewall_allowed_udp_ports:
+  # Jitsi
+  - "10000"

@@ -8,5 +8,5 @@ docker_package: "docker-{{ docker_edition }}"
 docker_package_state: present
 docker_compose_version: "1.25.0"
 docker_users:
-  - devops
-docker_user: devops
+  - "{{ ansible_user }}"
+docker_user: "{{ ansible_user }}"

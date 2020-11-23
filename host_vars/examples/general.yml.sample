@@ -1,0 +1,5 @@
+# General settings
+ansible_user: devops
+update_hostname: yes
+users: []
+sudoers: []
