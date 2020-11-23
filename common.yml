@@ -1,0 +1,6 @@
+---
+# Common provisioning
+
+- hosts: all
+  roles:
+    - jotbe.common

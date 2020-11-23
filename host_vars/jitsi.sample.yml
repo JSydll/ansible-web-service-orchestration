@@ -1,0 +1,21 @@
+# Jitsi
+jitsi_public_url: https://meet.example.com
+jitsi_docker_host_address: "{{ ansible_host }}"
+jitsi_exposed_http_port: 8000
+jitsi_exposed_https_port: 8443
+jitsi_timezone: Europe/Amsterdam
+jitsi_enable_letsencrypt: False
+jitsi_virtual_host: meet.example.com
+jitsi_jvb_stun_servers: meet-jit-si-turnrelay.jitsi.net:443
+# Passwords
+jitsi_jibri_recorder_password: my-super-secret-password-1
+jitsi_jibri_recorder_user: recorder
+jitsi_jibri_xmpp_password: my-super-secret-password-2
+jitsi_jibri_xmpp_user: jibri
+jitsi_jicofo_auth_password: my-super-secret-password-3
+jitsi_jicofo_auth_user: focus
+jitsi_jicofo_component_secret: my-super-secret-password-4
+jitsi_jigasi_xmpp_password: my-super-secret-password-5
+jitsi_jigasi_xmpp_user: jigasi
+jitsi_jvb_auth_user: jvb
+jitsi_jvb_auth_password: my-super-secret-password-6

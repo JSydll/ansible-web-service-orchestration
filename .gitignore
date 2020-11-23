@@ -1,0 +1,5 @@
+*.log
+*.ini
+/facts
+/group_vars/*/*
+/host_vars/*/*

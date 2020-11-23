@@ -1,0 +1,7 @@
+---
+# Nextcloud Hub
+
+- hosts: onlyoffice
+  become: true
+  roles:
+    - jotbe.onlyoffice-document-server-docker

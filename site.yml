@@ -1,0 +1,9 @@
+---
+# Deploy all the things
+
+- import_playbook: common.yml
+- import_playbook: docker.yml
+- import_playbook: nextcloud.yml
+- import_playbook: collabora-online.yml
+- import_playbook: jitsi.yml
+- import_playbook: cryptpad.yml

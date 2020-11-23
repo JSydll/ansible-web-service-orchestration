@@ -1,0 +1,7 @@
+---
+# Nextcloud Hub
+
+- hosts: collabora
+  become: true
+  roles:
+    - jotbe.collabora-online-docker

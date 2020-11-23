@@ -1,0 +1,7 @@
+---
+# Cryptpad
+
+- hosts: cryptpad
+  become: true
+  roles:
+    - jotbe.cryptpad-docker

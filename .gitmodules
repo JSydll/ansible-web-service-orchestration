@@ -1,0 +1,21 @@
+[submodule "roles/jotbe.common"]
+	path = roles/jotbe.common
+	url = https://git.jotbe.io/jotbe/ansible-role-common.git
+[submodule "roles/jotbe.traefik-docker"]
+	path = roles/jotbe.traefik-docker
+	url = https://git.jotbe.io/jotbe/ansible-role-traefik-docker.git
+[submodule "jotbe.nextcloud-docker"]
+	path = roles/jotbe.nextcloud-docker
+	url = https://git.jotbe.io/jotbe/ansible-role-nextcloud-docker.git
+[submodule "jotbe.jitsi-docker"]
+	path = roles/jotbe.jitsi-docker
+	url = https://git.jotbe.io/jotbe/ansible-role-jitsi-docker.git
+[submodule "jotbe.collabora-online-docker"]
+	path = roles/jotbe.collabora-online-docker
+	url = https://git.jotbe.io/jotbe/ansible-role-collabora-online-docker.git
+[submodule "jotbe.onlyoffice-document-server-docker"]
+	path = roles/jotbe.onlyoffice-document-server-docker
+	url = https://git.jotbe.io/jotbe/ansible-role-onlyoffice-document-server-docker.git
+[submodule "roles/jotbe.cryptpad-docker"]
+	path = roles/jotbe.cryptpad-docker
+	url = https://git.jotbe.io/jotbe/ansible-role-cryptpad-docker.git

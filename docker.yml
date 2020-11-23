@@ -1,0 +1,9 @@
+---
+# Basic Docker environment
+
+- hosts: docker
+  become: true
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+    - jotbe.traefik-docker

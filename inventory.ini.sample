@@ -1,0 +1,30 @@
+# All hosts
+myServer ansible_user=devops ansible_host=127.0.0.1
+
+[common]
+myServer
+
+[tenant_a]
+myServer
+
+[tenant_b]
+myServer
+
+[docker:children]
+common
+
+[nextcloud:children]
+tenant_a
+
+[jitsi_docker:children]
+tenant_a
+tenant_b
+
+[collabora:children]
+tenant_a
+
+[onlyoffice:children]
+tenant_a
+
+[cryptpad:children]
+tenant_a

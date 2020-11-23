@@ -1,0 +1,7 @@
+---
+# Nextcloud Hub
+
+- hosts: nextcloud
+  become: true
+  roles:
+    - jotbe.nextcloud-docker

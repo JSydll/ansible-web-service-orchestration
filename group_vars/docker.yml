@@ -1,0 +1,12 @@
+pip_package: python3-pip
+pip_install_packages:
+  - name: docker
+  - name: docker-compose
+docker_edition: "ce"
+docker_version: "19.03.5"
+docker_package: "docker-{{ docker_edition }}"
+docker_package_state: present
+docker_compose_version: "1.25.0"
+docker_users:
+  - devops
+docker_user: devops

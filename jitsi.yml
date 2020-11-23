@@ -1,0 +1,7 @@
+---
+# Jitsi Meet
+
+- hosts: jitsi_docker
+  become: true
+  roles:
+    - jotbe.jitsi-docker
