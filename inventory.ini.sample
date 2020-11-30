@@ -10,6 +10,9 @@ srv01_tenant_b
 ansible_host=207.0.0.1 
 ansible_ssh_host=207.0.0.1 
 
+[common]
+srv01_host
+
 [docker]
 srv01_host
 
