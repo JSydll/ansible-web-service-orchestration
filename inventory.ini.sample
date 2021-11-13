@@ -34,3 +34,6 @@ srv01_tenant_b
 
 #[cryptpad]
 #srv01_tenant_a
+
+[grafana_docker]
+srv01

@@ -1,0 +1,92 @@
+---
+# tasks file for grafana
+- name: Ensure service directory exists
+  file:
+    path: "{{ grafana_install_path }}/grafana"
+    state: directory
+    owner: '{{ grafana_install_user }}'
+    group: '{{ grafana_install_user }}'
+  tags: config
+
+- name: Provide docker-compose.yml
+  template:
+    src: templates/docker-compose.grafana.yml.j2
+    dest: "{{ grafana_install_path }}/grafana/docker-compose.yml"
+    owner: "{{ grafana_install_user }}"
+    group: "{{ grafana_install_user }}"
+    mode: '0644'
+  tags: config
+
+- name: Output docker-compose.yml
+  shell: cat {{ grafana_install_path }}/grafana/docker-compose.yml
+  register: output
+  tags: config
+- debug:
+    var: output
+
+- name: Provide Prometheus configuration
+  template:
+    src: templates/prometheus.yml.j2
+    dest: "{{ grafana_install_path }}/grafana/prometheus.yml"
+    owner: "{{ grafana_install_user }}"
+    group: "{{ grafana_install_user }}"
+    mode: '0644'
+  tags: config
+
+- name: Provide default dashboards
+  copy:
+    src: dashboards/default/
+    dest: "{{ grafana_install_path }}/grafana/dashboards"
+    owner: '{{ grafana_install_user }}'
+    group: '{{ grafana_install_user }}'
+  tags: config
+
+- name: Provide extension dashboards
+  copy:
+    src: "dashboards/extensions/{{ item }}.json"
+    dest: "{{ grafana_install_path }}/grafana/dashboards"
+    owner: '{{ grafana_install_user }}'
+    group: '{{ grafana_install_user }}'
+  loop: "{{ grafana_dashboard_extensions }}"
+  tags: config
+
+- name: Provide Grafana configuration
+  copy:
+    src: config/
+    dest: "{{ grafana_install_path }}/grafana"
+    owner: '{{ grafana_install_user }}'
+    group: '{{ grafana_install_user }}'
+  tags: config
+
+- name: "docker-compose: Teardown existing Grafana setup"
+  docker_compose:
+    project_src: "{{ grafana_install_path }}/grafana/"
+    state: absent
+  tags: ['never', 'teardown']
+
+- name: "docker-compose: Bootstrap Grafana"
+  docker_compose:
+    project_src: "{{ grafana_install_path }}/grafana/"
+    pull: yes
+  register: output
+- debug:
+    var: output
+
+- assert:
+    that:
+      - "output.ansible_facts['dashboard']['grafana_dashboard_1'].state.running"
+
+- name: "Test whether Grafana is healthy from the outside"
+  when: not ansible_check_mode
+  become: false
+  uri:
+    url: https://{{ grafana_virtual_host }}
+    return_content: yes
+    timeout: 300
+    validate_certs: no
+  register: url_check
+  delegate_to: localhost
+  until: "'<title>Grafana' in url_check.content"
+  retries: 5
+  delay: 10
+  tags: health

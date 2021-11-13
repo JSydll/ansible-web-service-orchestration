@@ -1,0 +1,27 @@
+galaxy_info:
+  author: Joschka Seydell
+  description: Developer
+
+  license: MIT
+  
+  min_ansible_version: 2.9
+
+  platforms:
+  - name: Debian
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+
+  galaxy_tags: 
+  - grafana
+  - dashboard
+  - monitoring
+  - docker
+  - traefik
+
+dependencies:
+- geerlingguy.docker
+- jotbe.traefik-docker
+  
