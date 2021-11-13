@@ -1,0 +1,7 @@
+---
+# Grafana
+
+- hosts: grafana_docker
+  become: true
+  roles:
+    - jsydll.grafana-docker

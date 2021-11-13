@@ -1,0 +1,8 @@
+---
+# defaults file for jsydll.grafana-docker
+grafana_install_user: '{{ ansible_user }}' # This user must be present on the host
+grafana_install_path: '/home/{{ grafana_install_user }}'
+grafana_virtual_host: localhost
+grafana_exposed_port: 3000
+grafana_prometheus_extra_jobs: []
+grafana_dashboard_extensions: []
