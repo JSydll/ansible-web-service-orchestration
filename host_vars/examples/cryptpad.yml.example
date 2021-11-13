@@ -1,0 +1,5 @@
+cryptpad_install_user: "{{ default_user }}"
+cryptpad_install_path: "{{ default_install_path }}"
+cryptpad_multitenant_label: "default"
+cryptpad_virtual_host; 'example.com'
+cryptpad_exposed_port: 3000

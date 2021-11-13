@@ -1,4 +1,4 @@
-# General settings
+# General host settings
 ansible_user: devops
 update_hostname: yes
 users: []

@@ -1,5 +1,6 @@
 jitsi_install_user: "{{ default_user }}"
 jitsi_install_path: "{{ default_install_path }}"
+jitsi_multitenant_label: "default"
 jitsi_public_url: https://meet.example.com
 jitsi_docker_host_address: "{{ ansible_host }}"
 jitsi_exposed_http_port: 8000
