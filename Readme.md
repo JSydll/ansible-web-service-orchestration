@@ -41,6 +41,10 @@ can be found (like firewall, traefik, ...).
 
 To write your own configuration files, checkout the `examples` provided. 
 
+## Running Ansible
+
+Executing the deployment can be done after configuration with `ansible-playbook --ask-become-pass site.yml`.
+
 ## Known limitations
 
 - Currently, only the Jitsi service was tested in multitenancy setup

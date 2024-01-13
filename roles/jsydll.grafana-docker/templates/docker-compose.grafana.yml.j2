@@ -1,0 +1,89 @@
+version: "3.5"
+ 
+services:
+  # Web interface
+  dashboard:
+    image: grafana/grafana
+    restart: unless-stopped
+    ports:
+      - {{ grafana_exposed_port }}
+    user: "104"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./dashboards:/var/lib/grafana/dashboards
+      - ./provisioning:/etc/grafana/provisioning
+      - ./config.ini:/etc/grafana/config.ini
+    labels:
+      traefik.enable: 'true'
+      traefik.port: {{ grafana_exposed_port }}
+      traefik.docker.network: traefik_public
+      traefik.http.routers.grafana.rule: 'Host(`{{ grafana_virtual_host }}`)'
+      traefik.http.routers.grafana.entrypoints: websecure
+      traefik.http.routers.grafana.tls: 'true'
+      traefik.http.routers.grafana.tls.certresolver: defaultresolver
+      traefik.http.middlewares.grafana-headers.headers.SSLRedirect: 'true'
+      traefik.http.middlewares.grafana-headers.headers.browserXSSFilter: 'true'
+      traefik.http.middlewares.grafana-headers.headers.contentTypeNosniff: 'true'
+      traefik.http.middlewares.grafana-headers.headers.forceSTSHeader: 'true'
+      traefik.http.middlewares.grafana-headers.headers.STSSeconds: 315360000
+      traefik.http.middlewares.grafana-headers.headers.STSIncludeSubdomains: 'true'
+      traefik.http.middlewares.grafana-headers.headers.STSPreload: 'true'
+      traefik.http.middlewares.grafana-headers.headers.featurePolicy: "geolocation 'none'; payment 'none'"
+      traefik.http.routers.grafana.middlewares: grafana-headers
+      traefik.frontend.passHostHeader: 'true' 
+    networks:
+      public:
+      grafana.net:
+  
+  # Data fusion
+  data-collector:
+    image: prom/prometheus
+    restart: unless-stopped
+    volumes:
+      - prometheus-data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      # Connect to public network managed by traefik to collect data there too
+      public:
+      grafana.net: 
+
+  # Data sources
+  sys-metrics:
+    image: prom/node-exporter:latest
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.ignored-mount-points="^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)"'
+      - '--collector.filesystem.ignored-fs-types="^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$"'
+    networks:
+      grafana.net: 
+
+  docker-metrics:
+    image: google/cadvisor:latest
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      grafana.net: 
+
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-storage:
+    driver: local
+ 
+networks:
+  grafana.net:
+  public:
+    external:
+      name: traefik_public

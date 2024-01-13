@@ -1,0 +1,12 @@
+# Grafana
+grafana_install_user: "{{ default_user }}"
+grafana_install_path: "{{ default_install_path }}"
+grafana_virtual_host: monitor.example.com
+grafana_exposed_port: 3000
+# Extra metrics shall be collected from Jitsi
+grafana_prometheus_extra_jobs: 
+  - name: jitsi-<tenantA>
+    target: 'jitsi_<tenantA>_exporter_1:8080'
+  - name: jitsi-<tenantB>
+    target: 'jitsi_<tenantB>_exporter_1:8080'
+grafana_dashboard_extensions: ["jitsi"]
