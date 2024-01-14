@@ -1,0 +1,57 @@
+---
+# tasks file for portainer
+- name: Ensure service directory exists
+  file:
+    path: "{{ portainer_install_path }}/portainer"
+    state: directory
+    owner: '{{ portainer_install_user }}'
+    group: '{{ portainer_install_user }}'
+  tags: config
+
+- name: Provide docker-compose.yml
+  template:
+    src: templates/docker-compose.portainer.yml.j2
+    dest: "{{ portainer_install_path }}/portainer/docker-compose.yml"
+    owner: "{{ portainer_install_user }}"
+    group: "{{ portainer_install_user }}"
+    mode: '0644'
+  tags: config
+
+- name: Output docker-compose.yml
+  shell: cat {{ portainer_install_path }}/portainer/docker-compose.yml
+  register: output
+  tags: config
+- debug:
+    var: output
+
+- name: "docker-compose: Teardown existing portainer setup"
+  docker_compose:
+    project_src: "{{ portainer_install_path }}/portainer/"
+    state: absent
+  tags: ['never', 'teardown']
+
+- name: "docker-compose: Bootstrap portainer"
+  docker_compose:
+    project_src: "{{ portainer_install_path }}/portainer/"
+  register: output
+- debug:
+    var: output
+
+- assert:
+    that:
+      - "output.ansible_facts['portainer']['portainer_portainer_1'].state.running"
+
+- name: "Test whether portainer is healthy from the outside"
+  when: not ansible_check_mode
+  become: false
+  uri:
+    url: https://{{ portainer_virtual_host }}
+    return_content: yes
+    timeout: 300
+    validate_certs: no
+  register: url_check
+  delegate_to: localhost
+  until: "'<title>portainer' in url_check.content"
+  retries: 5
+  delay: 10
+  tags: health

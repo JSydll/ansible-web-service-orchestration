@@ -1,0 +1,6 @@
+---
+# defaults file for jsydll.portainer-docker
+portainer_install_user: '{{ ansible_user }}' # This user must be present on the host
+portainer_install_path: '/home/{{ portainer_install_user }}'
+portainer_virtual_host: localhost
+portainer_exposed_port: 9000

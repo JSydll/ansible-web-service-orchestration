@@ -22,6 +22,9 @@ srv01_host
 [grafana]
 srv01
 
+[portainer]
+srv01
+
 [jenkins]
 srv01
 

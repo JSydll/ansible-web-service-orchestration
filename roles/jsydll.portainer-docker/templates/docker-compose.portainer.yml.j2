@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: traefik_public
+      traefik.http.routers.portainer.rule: 'Host(`{{ portainer_virtual_host }}`)'
+      traefik.http.routers.portainer.entrypoints: websecure
+      traefik.http.services.portainer.loadbalancer.server.port: {{ portainer_exposed_port }}
+      traefik.http.routers.portainer.tls.certresolver: defaultresolver
+      traefik.http.middlewares.portainer-headers.headers.SSLRedirect: 'true'
+      traefik.http.middlewares.portainer-headers.headers.browserXSSFilter: 'true'
+      traefik.http.middlewares.portainer-headers.headers.contentTypeNosniff: 'true'
+      traefik.http.middlewares.portainer-headers.headers.forceSTSHeader: 'true'
+      traefik.http.middlewares.portainer-headers.headers.STSSeconds: 315360000
+      traefik.http.middlewares.portainer-headers.headers.STSIncludeSubdomains: 'true'
+      traefik.http.middlewares.portainer-headers.headers.STSPreload: 'true'
+      traefik.http.middlewares.portainer-headers.headers.featurePolicy: "geolocation 'none'; payment 'none'"
+      traefik.http.routers.portainer.middlewares: portainer-headers
+    networks:
+      public:
+
+volumes:
+  portainer_data:
+
+networks:
+  public:
+    external:
+      name: traefik_public
