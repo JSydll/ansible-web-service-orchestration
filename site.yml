@@ -5,6 +5,7 @@
 - import_playbook: playbooks/docker.yml
 - import_playbook: playbooks/traefik.yml
 - import_playbook: playbooks/grafana.yml
+- import_playbook: playbooks/jenkins.yml
 - import_playbook: playbooks/nextcloud.yml
 - import_playbook: playbooks/collabora-online.yml
 - import_playbook: playbooks/jitsi.yml
