@@ -1,0 +1,101 @@
+---
+# tasks file for jenkins
+- name: Ensure service directory exists
+  file:
+    path: "{{ jenkins_install_path }}/jenkins"
+    state: directory
+    owner: '{{ jenkins_install_user }}'
+    group: '{{ jenkins_install_user }}'
+  tags: config
+
+- name: Ensure controller directory exists
+  file:
+    path: "{{ jenkins_install_path }}/jenkins/controller"
+    state: directory
+    owner: '{{ jenkins_install_user }}'
+    group: '{{ jenkins_install_user }}'
+  tags: config
+
+- name: Ensure agent directory exists
+  file:
+    path: "{{ jenkins_install_path }}/jenkins/agent"
+    state: directory
+    owner: '{{ jenkins_install_user }}'
+    group: '{{ jenkins_install_user }}'
+  tags: config
+
+#- name: "Git: Pull latest upstream jenkins sources"
+#  git:
+#    repo: "https://github.com/jareddlc/jenkins-with-docker-socket"
+#    dest: "{{ jenkins_install_path }}/jenkins/docker-src"
+#    version: master
+
+#- name: "Build jenkins docker images"
+#  command:
+#    chdir: "{{ jenkins_install_path }}/jenkins/docker-src/lts-alpine"
+#    cmd: ./docker-build.sh
+
+- name: Setup the agent ssh directory
+  file:
+    path: "{{ jenkins_install_path }}/jenkins/agent/.ssh"
+    state: directory
+    owner: '{{ jenkins_install_user }}'
+    group: '{{ jenkins_install_user }}'
+
+- name: "Provide the agent private key"
+  copy:
+    dest: "{{ jenkins_install_path }}/jenkins/agent/.ssh/id_rsa"
+    content: "{{ jenkins_agent_private_key }}"
+
+- name: "Provide the agent public key"
+  copy:
+    dest: "{{ jenkins_install_path }}/jenkins/agent/.ssh/id_rsa.pub"
+    content: "{{ jenkins_agent_public_key }}"
+
+- name: Provide docker-compose.yml
+  template:
+    src: templates/docker-compose.jenkins.yml.j2
+    dest: "{{ jenkins_install_path }}/jenkins/docker-compose.yml"
+    owner: "{{ jenkins_install_user }}"
+    group: "{{ jenkins_install_user }}"
+    mode: '0644'
+  tags: config
+
+- name: Output docker-compose.yml
+  shell: cat {{ jenkins_install_path }}/jenkins/docker-compose.yml
+  register: output
+  tags: config
+- debug:
+    var: output
+
+- name: "docker-compose: Teardown existing jenkins setup"
+  docker_compose:
+    project_src: "{{ jenkins_install_path }}/jenkins/"
+    state: absent
+  tags: ['never', 'teardown']
+
+- name: "docker-compose: Bootstrap jenkins"
+  docker_compose:
+    project_src: "{{ jenkins_install_path }}/jenkins/"
+  register: output
+- debug:
+    var: output
+
+- assert:
+    that:
+      - "output.ansible_facts['jenkins']['jenkins_jenkins_1'].state.running"
+
+- name: "Test whether jenkins is healthy from the outside"
+  when: not ansible_check_mode
+  become: false
+  uri:
+    url: https://{{ jenkins_virtual_host }}
+    return_content: yes
+    timeout: 300
+    validate_certs: no
+  register: url_check
+  delegate_to: localhost
+  until: "'<title>jenkins' in url_check.content"
+  retries: 5
+  delay: 10
+  tags: health

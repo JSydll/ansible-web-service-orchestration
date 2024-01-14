@@ -1,0 +1,8 @@
+---
+# defaults file for jsydll.jenkins-docker
+jenkins_install_user: '{{ ansible_user }}' # This user must be present on the host
+jenkins_install_path: '/home/{{ jenkins_install_user }}'
+jenkins_virtual_host: localhost
+jenkins_exposed_port: 8080
+jenkins_agent_private_key:
+jenkins_agent_public_key:

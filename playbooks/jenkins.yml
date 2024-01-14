@@ -1,0 +1,7 @@
+---
+# Jenkins
+
+- hosts: jenkins
+  become: true
+  roles:
+    - jsydll.jenkins-docker

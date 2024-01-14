@@ -19,6 +19,12 @@ srv01_host
 [traefik]
 srv01_host
 
+[grafana]
+srv01
+
+[jenkins]
+srv01
+
 #[nextcloud]
 #srv01_tenant_a
 
@@ -34,6 +40,3 @@ srv01_tenant_b
 
 #[cryptpad]
 #srv01_tenant_a
-
-[grafana]
-srv01

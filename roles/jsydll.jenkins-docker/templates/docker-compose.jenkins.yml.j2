@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-alpine
+    privileged: true
+    user: root
+    environment:
+      - "TZ= Europe/Berlin"
+    volumes:
+      - "{{ jenkins_install_path }}/jenkins/controller/home:/var/jenkins_home"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      traefik.enable: 'true'
+      traefik.port: {{ jenkins_exposed_port }}
+      traefik.docker.network: traefik_public
+      traefik.http.routers.jenkins.rule: 'Host(`{{ jenkins_virtual_host }}`)'
+      traefik.http.routers.jenkins.entrypoints: websecure
+      traefik.http.routers.jenkins.tls: 'true'
+      traefik.http.routers.jenkins.tls.certresolver: defaultresolver
+      traefik.http.middlewares.jenkins-headers.headers.SSLRedirect: 'true'
+      traefik.http.middlewares.jenkins-headers.headers.browserXSSFilter: 'true'
+      traefik.http.middlewares.jenkins-headers.headers.contentTypeNosniff: 'true'
+      traefik.http.middlewares.jenkins-headers.headers.forceSTSHeader: 'true'
+      traefik.http.middlewares.jenkins-headers.headers.STSSeconds: 315360000
+      traefik.http.middlewares.jenkins-headers.headers.STSIncludeSubdomains: 'true'
+      traefik.http.middlewares.jenkins-headers.headers.STSPreload: 'true'
+      traefik.http.middlewares.jenkins-headers.headers.featurePolicy: "geolocation 'none'; payment 'none'"
+      traefik.http.routers.jenkins.middlewares: jenkins-headers
+      traefik.frontend.passHostHeader: 'true' 
+    networks:
+      public:
+      jenkins.net:
+    
+  agent:
+    image: jenkins/ssh-agent:jdk11
+    privileged: true
+    user: root
+    expose:
+      - '22'
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY={{ jenkins_agent_public_key }}
+    networks:
+      jenkins.net:
+
+networks:
+  jenkins.net:
+  public:
+    external:
+      name: traefik_public
