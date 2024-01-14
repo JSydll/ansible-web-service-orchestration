@@ -1,0 +1,9 @@
+nextcloud_install_user: "{{ default_user }}"
+nextcloud_install_path: "{{ tenant_install_path }}"
+nextcloud_multitenant_label: "example_com"
+nextcloud_virtual_host: "cloud.example.com"
+nextcloud_letsencrypt_email: admin@example.com
+# Passwords
+nextcloud_mariadb_root_password: my-super-secret-password-1
+nextcloud_mariadb_password: my-super-secret-password-2
+nextcloud_admin_password: my-super-secret-password-3
