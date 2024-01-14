@@ -21,7 +21,7 @@ galaxy_info:
   - docker
   - traefik
 
-dependencies:
-- geerlingguy.docker
-- jotbe.traefik-docker
+dependencies: []
+  #- geerlingguy.docker
+  #- jotbe.traefik-docker
   

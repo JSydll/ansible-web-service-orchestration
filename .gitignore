@@ -2,6 +2,7 @@
 *.ini
 *vault*
 /facts
+/archive
 /host_vars/*/*
 !/host_vars/examples/*
 /roles/geerlingguy*

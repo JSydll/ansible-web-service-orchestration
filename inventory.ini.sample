@@ -22,7 +22,7 @@ srv01_host
 #[nextcloud]
 #srv01_tenant_a
 
-[jitsi_docker]
+[jitsi]
 srv01_tenant_a
 srv01_tenant_b
 
@@ -35,5 +35,5 @@ srv01_tenant_b
 #[cryptpad]
 #srv01_tenant_a
 
-[grafana_docker]
+[grafana]
 srv01
