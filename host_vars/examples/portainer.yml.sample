@@ -1,0 +1,4 @@
+# Portainer
+portainer_install_user: "{{ default_user }}"
+portainer_install_path: "{{ default_install_path }}"
+portainer_virtual_host: portainer.example.com

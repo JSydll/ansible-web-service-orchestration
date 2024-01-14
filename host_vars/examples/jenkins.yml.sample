@@ -1,0 +1,7 @@
+# Jenkins
+jenkins_install_user: "{{ default_user }}"
+jenkins_install_path: "{{ default_install_path }}"
+jenkins_virtual_host: ci.example.com
+jenkins_exposed_port: 8080
+jenkins_agent_private_key: <my-agent-private-key>
+jenkins_agent_public_key: <my-agent-public-key>
